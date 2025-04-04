@@ -1,4 +1,4 @@
-from functions import parse_input,add_contact, change_contact, show_phone, add_birthday, show_birthday
+from functions import parse_input,add_contact, change_contact, show_phone, add_birthday, show_birthday, delete_contact
 from classes import AddressBook
 
 def main():
@@ -34,6 +34,9 @@ def main():
 
         elif command == "birthdays":
             print(book.get_upcoming_birthdays())
+
+        elif command == "delete":
+            print(delete_contact(args, book))
 
         elif command =="all":
             print(book)

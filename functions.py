@@ -30,7 +30,7 @@ def change_contact(args, book: AddressBook):
    if len(args) == 3:
        name, old_number, new_number = args 
    else:
-       return "Give me a name and two numbers, please."
+       return "Give me a name, an old and a new numbers, please."
    
    if not Phone(new_number).is_valid():
         raise ValueError    
@@ -75,8 +75,10 @@ def show_birthday(args, book: AddressBook):
     else:
         return "The birthday is not set" 
     
-
-
+@contact_error
+def delete_contact(args, book: AddressBook):
+    name = args[0] 
+    return book.delete(name)
 
 
 

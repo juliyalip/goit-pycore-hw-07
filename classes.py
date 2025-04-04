@@ -112,10 +112,8 @@ class Record:
                  print(f"{self.name.value}: {found_phone}")
                 
     def __str__(self):
-         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)} " 
+         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}" 
    
-
-
 # -------------------------------------------------------------------
 
 class AddressBook(UserDict):
@@ -136,6 +134,7 @@ class AddressBook(UserDict):
         for name, _ in self.data.items():
             if name == contact_name:
                 del self.data[name]
+                return f"contact {name} was deleted"
             raise KeyError
     
     def __repr__(self):
@@ -149,8 +148,6 @@ class AddressBook(UserDict):
         upcoming_birthdays =[]
         current_date = datetime.today().date()
         future_date = current_date + timedelta(days=7)
-
-
 
         for key, record in self.data.items():
             if record.birthday:
@@ -174,28 +171,10 @@ class AddressBook(UserDict):
                         "congratulation_date": congratulation_date.strftime("%Y.%m.%d")
                     }
                         upcoming_birthdays.append(holliday_user)     
-            return upcoming_birthdays if upcoming_birthdays else "There are no birthdays in the next week."
+        return upcoming_birthdays if upcoming_birthdays else "There are no birthdays in the next week."
 
 
-   
-if __name__=="__main__":
-    john_record = Record("John")
-    john_record.add_phone("1234567890")
-    pusha=Record("pusza")
-   
-    pusha.add_phone('1231231234')
-    print(pusha)
-    varia=Record("varia")
-    varia.add_phone("21323")
-    print(varia)
-    user=Record("user")
-    user.add_birthday("12.03.1976")
-    john_record.add_birthday("06.04.1985")
-    book = AddressBook()
-    book.add_record(john_record)
-    book.add_record(user)
-    print('book: ', book)
-    print(book.get_upcoming_birthdays())
+
     
   
   
