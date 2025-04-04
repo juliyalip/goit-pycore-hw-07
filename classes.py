@@ -62,6 +62,9 @@ class Birthday(Field):
             
         except ValueError:
             raise ValueError("Invalid date. Please write the corect date")
+        
+    def to_datetime(self):
+        return self.__birthday 
     
     def __str__(self):
         return f"{self.__birthday}"
@@ -139,7 +142,7 @@ class AddressBook(UserDict):
         if not self.data:
             return "You don't have contacts yet"
 
-        return '\n'.join(f"{name}: {record}" for name, record in self.data.items())
+        return '\n'.join(f"{name}: {record}" for name, record in self.data.items() )
     
 
     def get_upcoming_birthdays(self):
@@ -168,7 +171,7 @@ class AddressBook(UserDict):
                         
                         holliday_user = {
                         "name": record.name.value,
-                        "congratulation_date": congratulation_date.strftime("%Y-%m-%d")
+                        "congratulation_date": congratulation_date.strftime("%Y.%m.%d")
                     }
                         upcoming_birthdays.append(holliday_user)     
             return upcoming_birthdays if upcoming_birthdays else "There are no birthdays in the next week."

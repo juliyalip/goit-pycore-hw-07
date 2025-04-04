@@ -12,7 +12,6 @@ def parse_input(user_input):
 @input_error
 def add_contact(args, book: AddressBook):
     name, phone, *_ = args
-    
     if not Phone(phone).is_valid():
         return "The phone must be 10 nummbers"
     
@@ -22,18 +21,25 @@ def add_contact(args, book: AddressBook):
         record = Record(name)
         book.add_record(record)
         message = "Contact added."
-    
     record.add_phone(phone)
     return message
 
-@input_error
+
 @contact_error
 def change_contact(args, book: AddressBook):
-   name, number = args
+   if len(args) == 3:
+       name, old_number, new_number = args 
+   else:
+       return "Give me a name and two numbers, please."
    
-   if not Phone(number).is_valid():
+   if not Phone(new_number).is_valid():
         raise ValueError    
-   book[name]=number
+   record = book.find(name)
+   if not record:
+        raise KeyError
+   if old_number not in [phone.value for phone in record.phones]:
+       raise ValueError
+   record.edit_phone(old_number, new_number)
    return "Contact updated."
 
 
@@ -43,30 +49,34 @@ def show_phone(args, book: AddressBook):
     name = args[0]
     return book[name] 
 
-
-@input_error
 @date_error
 def add_birthday(args, book: AddressBook):
     if len(args)<2:
-        raise IndexError("Give me a name and data please.")
+        return("Give me a name and a date of birthday, please.")
     name, date_br, *_ = args
     record = book.find(name)
     if not record:
         raise KeyError
     if not record.add_birthday(date_br):
         raise ValueError
+    
     return "The date was added"
     
 @input_error
 @contact_error
 def show_birthday(args, book: AddressBook):
     name=args[0]
+    if name not in book:
+        raise KeyError
     birthday = book[name].birthday
-    return birthday.strftime("%d.%m.%Y") if birthday else "The birthday is not set" 
+    if birthday:
+      birthday =  birthday.to_datetime()
+      return birthday.strftime("%d.%m.%Y") 
+    else:
+        return "The birthday is not set" 
     
 
-def birthdays(book: AddressBook):
-   return book.get_upcoming_birthdays()
+
 
 
 
